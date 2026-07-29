@@ -1,6 +1,6 @@
 import { state, rerender, toast } from "../state.js";
 import { el } from "../dom.js";
-import { saveSettings, saveCheckin, logout } from "../firestore.js";
+import { saveSettings, logout } from "../firestore.js";
 import { todayISO } from "../tracker-math.js";
 import { exportTrackerXlsx } from "../export-xlsx.js";
 
@@ -20,26 +20,6 @@ export function renderSettings(root) {
   const uid = state.user.uid;
 
   root.appendChild(el("div", "header", `<h1>설정</h1><div class="sub">${state.user.email}</div>`));
-
-  // 오늘의 체중 빠른 기록
-  const weightCard = el("div", "card");
-  weightCard.appendChild(el("div", "section-title", "⚖️ 오늘 체중 기록"));
-  const today = todayISO();
-  const wInput = el("input");
-  wInput.type = "number"; wInput.step = "0.1"; wInput.placeholder = "예: 90.5";
-  wInput.value = state.checkins[today]?.weight ?? "";
-  const wBtn = el("button", "cta-btn", "저장");
-  wBtn.style.marginTop = "10px";
-  wBtn.onclick = () => {
-    const val = Number(wInput.value);
-    if (!val) return toast("체중을 입력해 주세요");
-    state.checkins[today] = { ...(state.checkins[today] || {}), weight: val };
-    rerender();
-    saveCheckin(uid, today, { weight: val });
-    toast("체중이 기록되었어요");
-  };
-  weightCard.append(wInput, wBtn);
-  root.appendChild(weightCard);
 
   // 트래커 기준값
   const form = el("div", "card");

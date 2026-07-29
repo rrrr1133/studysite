@@ -9,3 +9,7 @@ package-lock.json
 # macOS
 .DS_Store
 Icon*
+
+# Firebase CLI 캐시
+.firebase/
+firebase-debug.log

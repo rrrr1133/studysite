@@ -1,4 +1,4 @@
-import { state, rerender } from "../state.js";
+import { state, rerender, toast } from "../state.js";
 import { el, navigate } from "../dom.js";
 import {
   elapsedWeek, currentPhase, thisWeekTargetWeight, dDay, formatDday,
@@ -67,9 +67,39 @@ export function renderHome(root) {
 
   // 체중 추이
   const weightCard = el("div", "card");
-  weightCard.innerHTML = `<div class="section-title" style="margin-top:0;">⚖️ 체중 추이 (기록 ${agg.weightRecords}회)</div>`;
+  weightCard.appendChild(el("div", "section-title", `⚖️ 체중 추이 (기록 ${agg.weightRecords}회)`));
+
+  const weightRow = el("div");
+  weightRow.style.display = "flex";
+  weightRow.style.gap = "8px";
+  weightRow.style.marginBottom = "12px";
+  const wInput = el("input");
+  wInput.type = "number"; wInput.step = "0.1"; wInput.placeholder = "오늘 체중 (예: 90.5)";
+  wInput.value = c.weight ?? "";
+  wInput.style.flex = "1";
+  wInput.style.border = "1.5px solid var(--line)";
+  wInput.style.borderRadius = "10px";
+  wInput.style.padding = "10px 12px";
+  wInput.style.fontSize = "14px";
+  wInput.style.background = "var(--bg)";
+  wInput.style.color = "var(--ink)";
+  const wBtn = el("button", "cta-btn", "저장");
+  wBtn.style.width = "auto";
+  wBtn.style.padding = "10px 18px";
+  wBtn.onclick = () => {
+    const val = Number(wInput.value);
+    if (!val) return toast("체중을 입력해 주세요");
+    const uid = state.user.uid;
+    state.checkins[today] = { ...(state.checkins[today] || {}), weight: val };
+    rerender();
+    saveCheckin(uid, today, { weight: val });
+    toast("체중이 기록되었어요");
+  };
+  weightRow.append(wInput, wBtn);
+  weightCard.appendChild(weightRow);
+
   if (hist.length === 0) {
-    weightCard.appendChild(el("div", "empty", "설정에서 체중을 기록하면 그래프가 나타나요"));
+    weightCard.appendChild(el("div", "empty", "위에서 체중을 기록하면 그래프가 나타나요"));
   } else {
     const recent = hist.slice(-14);
     const max = Math.max(s.startWeight, ...recent.map((h) => h.weight));
