@@ -18,7 +18,7 @@ function renderSplitCard(root, { key, title, today, todayData }) {
     drop.innerHTML = `<div class="icon">🍽️</div><div>식단 사진 인증</div>`;
   }
   const input = el("input");
-  input.type = "file"; input.accept = "image/*"; input.capture = "environment";
+  input.type = "file"; input.accept = "image/*";
   drop.appendChild(input);
   drop.onclick = () => input.click();
   input.onchange = async () => {
@@ -26,14 +26,14 @@ function renderSplitCard(root, { key, title, today, todayData }) {
     if (!file) return;
     toast("사진 압축 중…");
     const dataUrl = await compressImage(file);
-    save({ photo: dataUrl, done: true });
+    save({ photo: dataUrl });
   };
   card.appendChild(drop);
 
   const memo = el("textarea", "memo-input");
   memo.placeholder = "메모 (무엇을 먹었나요?)";
   memo.value = todayData?.memo || "";
-  memo.onblur = () => save({ memo: memo.value, done: memo.value.trim().length > 0 || !!todayData?.photo || done });
+  memo.onblur = () => save({ memo: memo.value });
   card.appendChild(memo);
 
   const toggleBtn = el("button", `cta-btn ${done ? "secondary" : ""}`, done ? "완료 취소" : "완료로 표시");
