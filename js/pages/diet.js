@@ -54,20 +54,20 @@ function renderSplitCard(root, { key, title, today, todayData }) {
 
 function renderHistory(root) {
   const entries = Object.entries(state.checkins)
-    .filter(([, c]) => c.diet?.brunch?.memo || c.diet?.dinner?.memo || c.diet?.brunch?.photo || c.diet?.dinner?.photo)
+    .filter(([, c]) => c.diet?.brunch?.done || c.diet?.dinner?.done)
     .sort((a, b) => (a[0] < b[0] ? 1 : -1))
     .slice(0, 14);
 
   root.appendChild(el("div", "section-title", "📋 최근 기록"));
   if (entries.length === 0) {
-    root.appendChild(el("div", "empty", "아직 기록이 없어요"));
+    root.appendChild(el("div", "empty", "완료로 표시하면 여기에 기록돼요"));
     return;
   }
   const list = el("div", "history-list");
   entries.forEach(([date, c]) => {
     ["brunch", "dinner"].forEach((k) => {
       const d = c.diet?.[k];
-      if (!d || (!d.memo && !d.photo)) return;
+      if (!d || !d.done) return;
       const row = el("div", "history-row");
       row.innerHTML = `
         ${d.photo ? `<img class="thumb" src="${d.photo}">` : `<div class="thumb"></div>`}
