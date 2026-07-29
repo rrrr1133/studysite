@@ -91,6 +91,16 @@ a{color:inherit;}
 .stat-card .n .unit{font-size:12px;color:var(--muted);font-weight:600;margin-left:2px;}
 .stat-card .l{font-size:11px;color:var(--muted);margin-top:2px;}
 
+.quote-card{
+  text-align:center;padding:18px 16px 16px;margin-bottom:14px;
+}
+.quote-card .quote-text{
+  font-size:19px;font-weight:800;color:var(--accent);line-height:1.5;
+}
+.quote-card .quote-author{
+  font-size:12px;color:var(--muted);font-weight:700;margin-top:10px;
+}
+
 .phase-banner{
   background:linear-gradient(120deg,var(--accent),#8fd8f7);color:#fff;border-radius:var(--radius);
   padding:16px 18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(47,168,224,.30);

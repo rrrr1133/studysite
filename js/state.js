@@ -8,7 +8,7 @@ export const state = {
   settings: { ...DEFAULT_SETTINGS },
   checkins: {},          // { "2026-07-27": {...} }
   progress: { jp1000: {}, karugaru: {} },
-  data: { jp1000: null, karugaru: null, numbers: null }, // 정적 JSON, 최초 1회 로드
+  data: { jp1000: null, karugaru: null, numbers: null, quotes: null }, // 정적 JSON, 최초 1회 로드
   route: "#/home"
 };
 
@@ -27,12 +27,14 @@ export function toast(msg) {
 
 export async function loadStaticData() {
   if (state.data.jp1000) return;
-  const [jp1000, karugaru, numbers] = await Promise.all([
+  const [jp1000, karugaru, numbers, quotes] = await Promise.all([
     fetch("./data/jp1000.json").then((r) => r.json()),
     fetch("./data/karugaru.json").then((r) => r.json()),
-    fetch("./data/numbers.json").then((r) => r.json())
+    fetch("./data/numbers.json").then((r) => r.json()),
+    fetch("./data/quotes.json").then((r) => r.json())
   ]);
   state.data.jp1000 = jp1000;
   state.data.karugaru = karugaru;
   state.data.numbers = numbers;
+  state.data.quotes = quotes;
 }

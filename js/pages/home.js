@@ -6,6 +6,13 @@ import {
 } from "../tracker-math.js";
 import { saveCheckin } from "../firestore.js";
 
+function quoteOfTheDay(quotes) {
+  const epoch = new Date(2020, 0, 1);
+  const days = Math.floor((new Date() - epoch) / 86400000);
+  const idx = ((days % quotes.length) + quotes.length) % quotes.length;
+  return quotes[idx];
+}
+
 function toggleManual(field) {
   const uid = state.user.uid;
   const today = todayISO();
@@ -29,6 +36,16 @@ export function renderHome(root) {
   const header = el("div", "header");
   header.innerHTML = `<h1>오늘도 한 걸음, 일본 IT 취업 🇯🇵</h1><div class="sub">${today} · 트래커 ${week}주차</div>`;
   root.appendChild(header);
+
+  if (state.data.quotes && state.data.quotes.length > 0) {
+    const q = quoteOfTheDay(state.data.quotes);
+    const quoteCard = el("div", "quote-card");
+    quoteCard.innerHTML = `
+      <div class="quote-text">"${q.text.replace(/\n/g, "<br>")}"</div>
+      <div class="quote-author">- ${q.author}</div>
+    `;
+    root.appendChild(quoteCard);
+  }
 
   const banner = el("div", "phase-banner");
   banner.innerHTML = `<div class="p1">현재 단계</div><div class="p2">${phase.label}</div>`;
