@@ -4,7 +4,9 @@ import {
   elapsedWeek, currentPhase, thisWeekTargetWeight, dDay, formatDday,
   aggregateCheckins, weightHistory, dailyComplianceHistory, todayISO
 } from "../tracker-math.js";
-import { saveCheckin } from "../firestore.js";
+import { saveCheckin, saveSettings } from "../firestore.js";
+import { isExportDue, markExported } from "../auto-export.js";
+import { exportTrackerXlsx } from "../export-xlsx.js";
 
 function quoteOfTheDay(quotes) {
   const epoch = new Date(2020, 0, 1);
@@ -50,6 +52,25 @@ export function renderHome(root) {
   const banner = el("div", "phase-banner");
   banner.innerHTML = `<div class="p1">현재 단계</div><div class="p2">${phase.label}</div>`;
   root.appendChild(banner);
+
+  if (isExportDue()) {
+    const exportBanner = el("div", "card");
+    exportBanner.innerHTML = `<div class="section-title" style="margin-top:0;">📤 이번 주 기록을 엑셀로 백업해두세요</div><div class="num-note">지난 백업으로부터 7일 이상 지났어요.</div>`;
+    const exportBtn = el("button", "cta-btn secondary", "지금 엑셀로 내보내기");
+    exportBtn.style.marginTop = "10px";
+    exportBtn.onclick = async () => {
+      toast("엑셀 생성 중…");
+      await exportTrackerXlsx();
+      markExported();
+      const uid = state.user.uid;
+      const todayNow = todayISO();
+      state.settings.lastExcelExport = todayNow;
+      rerender();
+      saveSettings(uid, { lastExcelExport: todayNow });
+    };
+    exportBanner.appendChild(exportBtn);
+    root.appendChild(exportBanner);
+  }
 
   // D-day
   const ddayGrid = el("div", "dday-grid");

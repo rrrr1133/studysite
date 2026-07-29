@@ -6,7 +6,6 @@ import { renderJapanese } from "./pages/japanese.js";
 import { renderExercise } from "./pages/exercise.js";
 import { renderDiet } from "./pages/diet.js";
 import { renderSettings } from "./pages/settings.js";
-import { maybeAutoExportWeekly } from "./auto-export.js";
 
 const app = document.getElementById("app");
 let unsubs = [];
@@ -114,10 +113,10 @@ onAuth(async (user) => {
 
   if (user) {
     await loadStaticData();
-    unsubs.push(watchAllCheckins(user.uid, (map) => { state.checkins = map; rerender(); maybeAutoExportWeekly(); }));
+    unsubs.push(watchAllCheckins(user.uid, (map) => { state.checkins = map; rerender(); }));
     unsubs.push(watchProgress(user.uid, "jp1000", (d) => { state.progress.jp1000 = d; rerender(); }));
     unsubs.push(watchProgress(user.uid, "karugaru", (d) => { state.progress.karugaru = d; rerender(); }));
-    unsubs.push(watchSettings(user.uid, (d) => { if (d) state.settings = { ...state.settings, ...d }; rerender(); maybeAutoExportWeekly(); }));
+    unsubs.push(watchSettings(user.uid, (d) => { if (d) state.settings = { ...state.settings, ...d }; rerender(); }));
     toast(`환영합니다, ${user.email}`);
   }
   render();
