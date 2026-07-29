@@ -51,7 +51,7 @@ export function renderSettings(root) {
   // 데이터 내보내기
   const exportCard = el("div", "card");
   exportCard.appendChild(el("div", "section-title", "📤 데이터 내보내기"));
-  exportCard.appendChild(el("div", "num-note", "원본 트래커 엑셀과 같은 형식(주차별 요일 체크 + 종합 성실도)으로 내려받습니다. 사이트를 열 때마다 지난 내보내기로부터 7일 이상 지났으면 자동으로도 한 번 내려받아요."));
+  exportCard.appendChild(el("div", "num-note", "원본 트래커 엑셀과 같은 형식(주차별 요일 체크 + 종합 성실도)으로 내려받습니다. 지난 백업으로부터 7일 이상 지나면 홈 화면에 안내 배너가 떠요."));
   exportCard.appendChild(el("div", "num-note", `마지막 내보내기: ${s.lastExcelExport || "아직 없음"}`));
   const exportBtn = el("button", "cta-btn secondary", "지금 엑셀로 내보내기");
   exportBtn.style.marginTop = "10px";
