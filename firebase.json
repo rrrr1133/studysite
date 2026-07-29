@@ -16,6 +16,14 @@
     ],
     "rewrites": [
       { "source": "**", "destination": "/index.html" }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(html|css|js|json)",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      }
     ]
   },
   "firestore": {
