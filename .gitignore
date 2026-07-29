@@ -1,0 +1,11 @@
+# 의존성 (npm install firebase 등으로 생성됨 - 사이트는 CDN import를 쓰므로 실제로는 불필요)
+node_modules/
+package-lock.json
+
+# 저작권이 명시된 교재 스캔본 원본 (용량도 GitHub 100MB 제한 초과) - data/*.json 으로 이미 추출됨
+카루가루 일본어_OCR 복사본.pdf
+일본어 카루가루1_OCR 복사본.pdf
+
+# macOS
+.DS_Store
+Icon*

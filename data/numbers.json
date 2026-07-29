@@ -1,0 +1,303 @@
+{
+  "_source": "PAGODA Books 「쉽고 빠르게 카루가루 일본어」의 각 과에 흩어져 있는 '카루가루 숫자' 코너를 한 페이지로 모은 개인 학습용 정리본입니다.",
+  "categories": [
+    {
+      "id": "basic0_10",
+      "title": "기본 숫자 0~10",
+      "sourceLesson": "2과",
+      "items": [
+        {"num": "0", "reading": "ゼロ / れい"},
+        {"num": "1", "reading": "いち"},
+        {"num": "2", "reading": "に"},
+        {"num": "3", "reading": "さん"},
+        {"num": "4", "reading": "よん / し"},
+        {"num": "5", "reading": "ご"},
+        {"num": "6", "reading": "ろく"},
+        {"num": "7", "reading": "なな / しち"},
+        {"num": "8", "reading": "はち"},
+        {"num": "9", "reading": "きゅう / く"},
+        {"num": "10", "reading": "じゅう"}
+      ],
+      "note": "전화번호를 읽을 때 '-'는 の로 발음 (예: 070-2345-6789 → ゼロ・ナナ・ゼロ の 2345 の 6789)"
+    },
+    {
+      "id": "tens",
+      "title": "십 단위 10~90",
+      "sourceLesson": "3과",
+      "items": [
+        {"num": "10", "reading": "じゅう"},
+        {"num": "20", "reading": "にじゅう"},
+        {"num": "30", "reading": "さんじゅう"},
+        {"num": "40", "reading": "よんじゅう"},
+        {"num": "50", "reading": "ごじゅう"},
+        {"num": "60", "reading": "ろくじゅう"},
+        {"num": "70", "reading": "ななじゅう"},
+        {"num": "80", "reading": "はちじゅう"},
+        {"num": "90", "reading": "きゅうじゅう"}
+      ]
+    },
+    {
+      "id": "hundreds",
+      "title": "백 단위 100~900",
+      "sourceLesson": "7과",
+      "items": [
+        {"num": "100", "reading": "ひゃく"},
+        {"num": "200", "reading": "にひゃく"},
+        {"num": "300", "reading": "さんびゃく"},
+        {"num": "400", "reading": "よんひゃく"},
+        {"num": "500", "reading": "ごひゃく"},
+        {"num": "600", "reading": "ろっぴゃく"},
+        {"num": "700", "reading": "ななひゃく"},
+        {"num": "800", "reading": "はっぴゃく"},
+        {"num": "900", "reading": "きゅうひゃく"}
+      ],
+      "note": "얼마예요? = いくらですか。 / ~주세요 = ~ください。"
+    },
+    {
+      "id": "thousands",
+      "title": "천 단위 1000~9000",
+      "sourceLesson": "9과",
+      "items": [
+        {"num": "1000", "reading": "せん"},
+        {"num": "2000", "reading": "にせん"},
+        {"num": "3000", "reading": "さんぜん"},
+        {"num": "4000", "reading": "よんせん"},
+        {"num": "5000", "reading": "ごせん"},
+        {"num": "6000", "reading": "ろくせん"},
+        {"num": "7000", "reading": "ななせん"},
+        {"num": "8000", "reading": "はっせん"},
+        {"num": "9000", "reading": "きゅうせん"}
+      ]
+    },
+    {
+      "id": "manoku",
+      "title": "만 / 억 단위",
+      "sourceLesson": "11과",
+      "items": [
+        {"num": "1만", "reading": "いちまん"},
+        {"num": "2만", "reading": "にまん"},
+        {"num": "3만", "reading": "さんまん"},
+        {"num": "4만", "reading": "よんまん"},
+        {"num": "5만", "reading": "ごまん"},
+        {"num": "6만", "reading": "ろくまん"},
+        {"num": "7만", "reading": "ななまん"},
+        {"num": "8만", "reading": "はちまん"},
+        {"num": "9만", "reading": "きゅうまん"},
+        {"num": "1억", "reading": "いちおく"},
+        {"num": "2억", "reading": "におく"},
+        {"num": "3억", "reading": "さんおく"}
+      ]
+    },
+    {
+      "id": "counting_native",
+      "title": "고유어 수 (하나~열, 개수 세기)",
+      "sourceLesson": "6과",
+      "items": [
+        {"num": "1개", "reading": "ひとつ"},
+        {"num": "2개", "reading": "ふたつ"},
+        {"num": "3개", "reading": "みっつ"},
+        {"num": "4개", "reading": "よっつ"},
+        {"num": "5개", "reading": "いつつ"},
+        {"num": "6개", "reading": "むっつ"},
+        {"num": "7개", "reading": "ななつ"},
+        {"num": "8개", "reading": "やっつ"},
+        {"num": "9개", "reading": "ここのつ"},
+        {"num": "10개", "reading": "とお"},
+        {"num": "몇개", "reading": "いくつ"}
+      ],
+      "note": "물건 개수(한 개, 두 개…)와 어린 나이(한 살, 두 살…)를 셀 때 사용"
+    },
+    {
+      "id": "counter_people_animal",
+      "title": "조수사: 명 / 마리",
+      "sourceLesson": "10과",
+      "items": [
+        {"num": "1", "reading": "ひとり (명) / いっぴき (마리)"},
+        {"num": "2", "reading": "ふたり / にひき"},
+        {"num": "3", "reading": "さんにん / さんびき"},
+        {"num": "4", "reading": "よにん / よんひき"},
+        {"num": "5", "reading": "ごにん / ごひき"},
+        {"num": "6", "reading": "ろくにん / ろっぴき"},
+        {"num": "7", "reading": "ななにん / ななひき"},
+        {"num": "8", "reading": "はちにん / はっぴき"},
+        {"num": "9", "reading": "きゅうにん / きゅうひき"},
+        {"num": "10", "reading": "じゅうにん / じゅっぴき"},
+        {"num": "몇", "reading": "なんにん (몇 명) / なんびき (몇 마리)"}
+      ],
+      "note": "何人家族ですか(몇 명 가족이에요) / ペットは何匹いますか(반려동물은 몇 마리 있어요)"
+    },
+    {
+      "id": "time_hour",
+      "title": "시각 1시~12시",
+      "sourceLesson": "4과",
+      "items": [
+        {"num": "1시", "reading": "いちじ"},
+        {"num": "2시", "reading": "にじ"},
+        {"num": "3시", "reading": "さんじ"},
+        {"num": "4시", "reading": "よじ"},
+        {"num": "5시", "reading": "ごじ"},
+        {"num": "6시", "reading": "ろくじ"},
+        {"num": "7시", "reading": "しちじ"},
+        {"num": "8시", "reading": "はちじ"},
+        {"num": "9시", "reading": "くじ"},
+        {"num": "10시", "reading": "じゅうじ"},
+        {"num": "11시", "reading": "じゅういちじ"},
+        {"num": "12시", "reading": "じゅうにじ"}
+      ],
+      "note": "지금 몇 시예요? = 今何時ですか。"
+    },
+    {
+      "id": "time_minute",
+      "title": "분 (5분 단위)",
+      "sourceLesson": "5과",
+      "items": [
+        {"num": "5분", "reading": "ごふん"},
+        {"num": "10분", "reading": "じゅっぷん"},
+        {"num": "15분", "reading": "じゅうごふん"},
+        {"num": "20분", "reading": "にじゅっぷん"},
+        {"num": "25분", "reading": "にじゅうごふん"},
+        {"num": "30분", "reading": "さんじゅっぷん"},
+        {"num": "35분", "reading": "さんじゅうごふん"},
+        {"num": "40분", "reading": "よんじゅっぷん"},
+        {"num": "45분", "reading": "よんじゅうごふん"},
+        {"num": "50분", "reading": "ごじゅっぷん"},
+        {"num": "55분", "reading": "ごじゅうごふん"},
+        {"num": "60분", "reading": "ろくじゅっぷん"}
+      ],
+      "note": "~부터 ~까지 = ~から~まで"
+    },
+    {
+      "id": "year",
+      "title": "연도 · 학년",
+      "sourceLesson": "10과",
+      "items": [
+        {"num": "1년", "reading": "いちねん"},
+        {"num": "2년", "reading": "にねん"},
+        {"num": "3년", "reading": "さんねん"},
+        {"num": "4년", "reading": "よねん (よんねん ×)"},
+        {"num": "몇 년", "reading": "なんねん"},
+        {"num": "몇 년생", "reading": "なんねんうまれ"},
+        {"num": "몇 학년", "reading": "なんねんせい"},
+        {"num": "1학년", "reading": "いちねんせい"},
+        {"num": "2학년", "reading": "にねんせい"},
+        {"num": "3학년", "reading": "さんねんせい"},
+        {"num": "4학년", "reading": "よねんせい"}
+      ],
+      "note": "4년은 よねん, よんねん(X) — 예외 발음 주의"
+    },
+    {
+      "id": "month",
+      "title": "월 1월~12월",
+      "sourceLesson": "12과",
+      "items": [
+        {"num": "1월", "reading": "いちがつ"},
+        {"num": "2월", "reading": "にがつ"},
+        {"num": "3월", "reading": "さんがつ"},
+        {"num": "4월", "reading": "しがつ"},
+        {"num": "5월", "reading": "ごがつ"},
+        {"num": "6월", "reading": "ろくがつ"},
+        {"num": "7월", "reading": "しちがつ"},
+        {"num": "8월", "reading": "はちがつ"},
+        {"num": "9월", "reading": "くがつ"},
+        {"num": "10월", "reading": "じゅうがつ"},
+        {"num": "11월", "reading": "じゅういちがつ"},
+        {"num": "12월", "reading": "じゅうにがつ"},
+        {"num": "몇 월", "reading": "なんがつ"}
+      ],
+      "note": "4월(しがつ), 7월(しちがつ), 9월(くがつ)은 예외 발음"
+    },
+    {
+      "id": "day_of_month",
+      "title": "일 1일~31일 (불규칙 읽기)",
+      "sourceLesson": "13과",
+      "items": [
+        {"num": "1일", "reading": "ついたち"},
+        {"num": "2일", "reading": "ふつか"},
+        {"num": "3일", "reading": "みっか"},
+        {"num": "4일", "reading": "よっか"},
+        {"num": "5일", "reading": "いつか"},
+        {"num": "6일", "reading": "むいか"},
+        {"num": "7일", "reading": "なのか"},
+        {"num": "8일", "reading": "ようか"},
+        {"num": "9일", "reading": "ここのか"},
+        {"num": "10일", "reading": "とおか"},
+        {"num": "14일", "reading": "じゅうよっか"},
+        {"num": "20일", "reading": "はつか"},
+        {"num": "24일", "reading": "にじゅうよっか"},
+        {"num": "몇 일", "reading": "なんにち"}
+      ],
+      "note": "1~10일, 14/20/24일은 고유어 불규칙 읽기, 그 외는 じゅう+숫자+にち 로 규칙적. 오늘은 며칠? = 今日は何月何日ですか。"
+    },
+    {
+      "id": "duration_month",
+      "title": "개월 수 1개월~12개월",
+      "sourceLesson": "14과",
+      "items": [
+        {"num": "1개월", "reading": "いっかげつ"},
+        {"num": "2개월", "reading": "にかげつ"},
+        {"num": "3개월", "reading": "さんかげつ"},
+        {"num": "4개월", "reading": "よんかげつ"},
+        {"num": "5개월", "reading": "ごかげつ"},
+        {"num": "6개월", "reading": "ろっかげつ"},
+        {"num": "7개월", "reading": "ななかげつ"},
+        {"num": "8개월", "reading": "はっかげつ"},
+        {"num": "9개월", "reading": "きゅうかげつ"},
+        {"num": "10개월", "reading": "じゅっかげつ"},
+        {"num": "11개월", "reading": "じゅういっかげつ"},
+        {"num": "12개월", "reading": "じゅうにかげつ"},
+        {"num": "몇 개월", "reading": "なんかげつ"}
+      ]
+    },
+    {
+      "id": "times",
+      "title": "횟수 1회~10회",
+      "sourceLesson": "15과",
+      "items": [
+        {"num": "1회", "reading": "いっかい"},
+        {"num": "2회", "reading": "にかい"},
+        {"num": "3회", "reading": "さんかい"},
+        {"num": "4회", "reading": "よんかい"},
+        {"num": "5회", "reading": "ごかい"},
+        {"num": "6회", "reading": "ろっかい"},
+        {"num": "7회", "reading": "ななかい"},
+        {"num": "8회", "reading": "はち(はっ)かい"},
+        {"num": "9회", "reading": "きゅうかい"},
+        {"num": "10회", "reading": "じゅっかい"},
+        {"num": "몇 회", "reading": "なんかい"}
+      ],
+      "note": "一日に1回(하루에 한 번), 週に2回(일주일에 두 번), 年に4回(일 년에 네 번)"
+    },
+    {
+      "id": "order",
+      "title": "순서 첫번째~열번째",
+      "sourceLesson": "16과",
+      "items": [
+        {"num": "첫번째", "reading": "いちばんめ"},
+        {"num": "두번째", "reading": "にばんめ"},
+        {"num": "세번째", "reading": "さんばんめ"},
+        {"num": "네번째", "reading": "よんばんめ"},
+        {"num": "다섯번째", "reading": "ごばんめ"},
+        {"num": "여섯번째", "reading": "ろくばんめ"},
+        {"num": "일곱번째", "reading": "ななばんめ"},
+        {"num": "여덟번째", "reading": "はちばんめ"},
+        {"num": "아홉번째", "reading": "きゅうばんめ"},
+        {"num": "열번째", "reading": "じゅうばんめ"}
+      ]
+    },
+    {
+      "id": "weekday",
+      "title": "요일",
+      "sourceLesson": "일반 상식(기초 필수)",
+      "items": [
+        {"num": "월요일", "reading": "げつようび"},
+        {"num": "화요일", "reading": "かようび"},
+        {"num": "수요일", "reading": "すいようび"},
+        {"num": "목요일", "reading": "もくようび"},
+        {"num": "금요일", "reading": "きんようび"},
+        {"num": "토요일", "reading": "どようび"},
+        {"num": "일요일", "reading": "にちようび"},
+        {"num": "무슨 요일", "reading": "なんようび"}
+      ]
+    }
+  ]
+}
