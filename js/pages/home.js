@@ -104,10 +104,13 @@ export function renderHome(root) {
     timeEl.textContent = formatTimeKR(new Date());
   }, 10000);
 
-  const weatherEl = hero.querySelector(".hw-weather");
   function renderWeather(w) {
-    if (!w) { weatherEl.innerHTML = ""; return; }
-    weatherEl.innerHTML = `${weatherIcon(w.code)}<span>${w.tempC}°C</span>`;
+    // Firestore 리스너들이 초기 로드 중 짧은 시간에 여러 번 rerender()를 유발해서
+    // 이 render 시점에 캡처해둔 DOM 노드가 그 사이 교체돼 있을 수 있다.
+    // 그래서 콜백이 실제로 실행되는 시점에 현재 문서에서 다시 찾는다.
+    const el = document.querySelector(".hw-weather");
+    if (!el) return;
+    el.innerHTML = w ? `${weatherIcon(w.code)}<span>${w.tempC}°C</span>` : "";
   }
   renderWeather(getCachedWeather());
   ensureWeather(renderWeather);
