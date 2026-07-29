@@ -7,6 +7,7 @@ import {
 import { saveCheckin, saveSettings } from "../firestore.js";
 import { isExportDue, markExported } from "../auto-export.js";
 import { exportTrackerXlsx } from "../export-xlsx.js";
+import { ensureWeather, getCachedWeather, weatherIcon } from "../weather.js";
 
 function quoteOfTheDay(quotes) {
   const epoch = new Date(2020, 0, 1);
@@ -14,6 +15,47 @@ function quoteOfTheDay(quotes) {
   const idx = ((days % quotes.length) + quotes.length) % quotes.length;
   return quotes[idx];
 }
+
+const WEEKDAY_KR = ["일", "월", "화", "수", "목", "금", "토"];
+
+function formatDateKR(d) {
+  return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일 (${WEEKDAY_KR[d.getDay()]})`;
+}
+
+function formatTimeKR(d) {
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+const HERO_SVG = `
+<svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d1b2a"/>
+      <stop offset="55%" stop-color="#123a5e"/>
+      <stop offset="100%" stop-color="#2fa8e0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="400" fill="url(#skyGrad)"/>
+  <circle cx="150" cy="70" r="2" fill="#ffffff" opacity=".8"/>
+  <circle cx="260" cy="110" r="1.5" fill="#ffffff" opacity=".6"/>
+  <circle cx="420" cy="60" r="2" fill="#ffffff" opacity=".7"/>
+  <circle cx="600" cy="90" r="1.5" fill="#ffffff" opacity=".5"/>
+  <circle cx="820" cy="55" r="2" fill="#ffffff" opacity=".8"/>
+  <circle cx="980" cy="100" r="1.5" fill="#ffffff" opacity=".6"/>
+  <circle cx="1100" cy="70" r="2" fill="#ffffff" opacity=".7"/>
+  <circle cx="70" cy="150" r="60" fill="#ffe8b8" opacity=".18"/>
+  <path d="M300 340 L470 150 L520 195 L560 150 L740 340 Z" fill="#274b6d" opacity=".9"/>
+  <path d="M470 150 L520 195 L560 150 L545 168 L515 168 Z" fill="#e8f3fa" opacity=".95"/>
+  <g opacity=".85">
+    <rect x="1000" y="230" width="18" height="110" fill="#7a2e2e"/>
+    <rect x="1110" y="230" width="18" height="110" fill="#7a2e2e"/>
+    <rect x="985" y="230" width="158" height="16" fill="#7a2e2e"/>
+    <rect x="995" y="260" width="138" height="12" fill="#7a2e2e"/>
+  </g>
+  <path d="M0 360 Q150 330 300 355 T600 350 T900 358 T1200 345 L1200 400 L0 400 Z" fill="#0a2740" opacity=".9"/>
+</svg>`;
+
+let clockTimer = null;
 
 function toggleManual(field) {
   const uid = state.user.uid;
@@ -35,9 +77,40 @@ export function renderHome(root) {
   const weekTarget = thisWeekTargetWeight(s, today);
   const hist = weightHistory(state.checkins);
 
-  const header = el("div", "header");
-  header.innerHTML = `<h1>오늘도 한 걸음, 일본 IT 취업 🇯🇵</h1><div class="sub">${today} · 트래커 ${week}주차</div>`;
-  root.appendChild(header);
+  clearInterval(clockTimer);
+  const now = new Date();
+
+  const hero = el("div", "home-hero");
+  hero.innerHTML = `
+    <div class="hero-bg">${HERO_SVG}</div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>오늘도 한 걸음, 일본 IT 취업 🇯🇵</h1>
+        <div class="sub">${today} · 트래커 ${week}주차</div>
+      </div>
+      <div class="hero-widget">
+        <div class="hw-date">${formatDateKR(now)}</div>
+        <div class="hw-time">${formatTimeKR(now)}</div>
+        <div class="hw-weather"></div>
+      </div>
+    </div>
+  `;
+  root.appendChild(hero);
+
+  const timeEl = hero.querySelector(".hw-time");
+  clockTimer = setInterval(() => {
+    if (!timeEl.isConnected) { clearInterval(clockTimer); return; }
+    timeEl.textContent = formatTimeKR(new Date());
+  }, 10000);
+
+  const weatherEl = hero.querySelector(".hw-weather");
+  function renderWeather(w) {
+    if (!w) { weatherEl.innerHTML = ""; return; }
+    weatherEl.innerHTML = `${weatherIcon(w.code)}<span>${w.tempC}°C</span>`;
+  }
+  renderWeather(getCachedWeather());
+  ensureWeather(renderWeather);
 
   if (state.data.quotes && state.data.quotes.length > 0) {
     const q = quoteOfTheDay(state.data.quotes);
