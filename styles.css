@@ -84,7 +84,7 @@ a{color:inherit;}
 .dday-card .value{font-size:20px;font-weight:800;color:var(--accent);margin-top:4px;}
 .dday-card .date{font-size:10px;color:var(--muted);margin-top:2px;}
 
-.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
 @media (min-width:860px){.stat-grid{grid-template-columns:repeat(4,1fr);gap:14px;}}
 .stat-card{background:var(--card);border-radius:14px;padding:14px 14px;box-shadow:var(--shadow);}
 .stat-card .n{font-size:22px;font-weight:800;color:var(--ink);}
