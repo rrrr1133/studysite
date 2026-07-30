@@ -103,7 +103,7 @@ function renderNumbersTab(root) {
     wrap.innerHTML = `<h3>${cat.title}<span class="src">${cat.sourceLesson || ""}</span></h3>`;
     const grid = el("div", "num-grid");
     cat.items.forEach((it) => {
-      const cell = el("div", "num-item", `<div class="n">${it.num}</div><div class="r">${it.reading}</div>`);
+      const cell = el("div", `num-item${it.warn ? " warn" : ""}`, `<div class="n">${it.num}</div><div class="r">${it.reading}</div>`);
       grid.appendChild(cell);
     });
     wrap.appendChild(grid);

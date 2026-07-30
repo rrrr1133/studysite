@@ -63,6 +63,20 @@ export function formatDday(n) {
   return n > 0 ? `D-${n}` : `D+${-n}`;
 }
 
+// 무산소/유산소(또는 아점/저녁) 중 몇 개가 done인지에 따라 0 / 0.5 / 1을 반환한다.
+// 두 항목을 모두 인증해야 최종완료(1)이고, 하나만 인증하면 절반 성공(0.5)으로 기록된다.
+export function exerciseScore(c) {
+  const a = c?.exercise?.anaerobic?.done ? 1 : 0;
+  const b = c?.exercise?.aerobic?.done ? 1 : 0;
+  return (a + b) / 2;
+}
+
+export function dietScore(c) {
+  const a = c?.diet?.brunch?.done ? 1 : 0;
+  const b = c?.diet?.dinner?.done ? 1 : 0;
+  return (a + b) / 2;
+}
+
 // checkins: { [date]: { japanese:{done}, java:{done}, exercise:{anaerobic:{done},aerobic:{done}}, diet:{brunch:{done},dinner:{done}}, weight:number|null } }
 export function aggregateCheckins(checkins) {
   const days = Object.values(checkins || {});
@@ -70,7 +84,7 @@ export function aggregateCheckins(checkins) {
   for (const c of days) {
     if (c.japanese?.done) japanese++;
     if (c.java?.done) java++;
-    if (c.exercise?.anaerobic?.done || c.exercise?.aerobic?.done) exercise++;
+    if (exerciseScore(c) === 1) exercise++;
     if (typeof c.weight === "number") weightRecords++;
   }
   return { japanese, java, exercise, weightRecords, totalDays: days.length };
@@ -90,9 +104,9 @@ export function dailyComplianceHistory(checkins) {
       let score = 0;
       if (c.japanese?.done) score += 25;
       if (c.java?.done) score += 25;
-      if (c.exercise?.anaerobic?.done || c.exercise?.aerobic?.done) score += 25;
-      if (c.diet?.brunch?.done || c.diet?.dinner?.done) score += 25;
-      return { date, score };
+      score += 25 * exerciseScore(c);
+      score += 25 * dietScore(c);
+      return { date, score: Math.round(score) };
     })
     .sort((a, b) => (a.date < b.date ? -1 : 1));
 }

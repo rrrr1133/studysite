@@ -1,5 +1,6 @@
 // 원본 일본IT취업_목표트래커.xlsx 의 "주간체크리스트" 시트와 같은 컬럼 구조로 내보낸다.
 import { state } from "./state.js";
+import { exerciseScore, dietScore } from "./tracker-math.js";
 
 function isoAddDays(iso, n) {
   const [y, m, d] = iso.split("-").map(Number);
@@ -39,8 +40,8 @@ function buildRows(settings, checkins) {
       const c = checkins[date] || {};
       dayFlags.japanese.push(c.japanese?.done ? "O" : "");
       dayFlags.java.push(c.java?.done ? "O" : "");
-      dayFlags.exercise.push((c.exercise?.anaerobic?.done || c.exercise?.aerobic?.done) ? "O" : "");
-      dayFlags.diet.push((c.diet?.brunch?.done || c.diet?.dinner?.done) ? "O" : "");
+      dayFlags.exercise.push(exerciseScore(c) === 1 ? "O" : "");
+      dayFlags.diet.push(dietScore(c) === 1 ? "O" : "");
       if (typeof c.weight === "number") weightForWeek = c.weight;
       if (c.exercise?.anaerobic?.memo) memos.push(c.exercise.anaerobic.memo);
       if (c.exercise?.aerobic?.memo) memos.push(c.exercise.aerobic.memo);

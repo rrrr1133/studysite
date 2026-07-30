@@ -2,7 +2,8 @@ import { state, rerender, toast } from "../state.js";
 import { el, navigate } from "../dom.js";
 import {
   elapsedWeek, currentPhase, thisWeekTargetWeight, dDay, formatDday,
-  aggregateCheckins, weightHistory, dailyComplianceHistory, todayISO
+  aggregateCheckins, weightHistory, dailyComplianceHistory, todayISO,
+  exerciseScore, dietScore
 } from "../tracker-math.js";
 import { saveCheckin, saveSettings } from "../firestore.js";
 import { isExportDue, markExported } from "../auto-export.js";
@@ -269,15 +270,29 @@ export function renderHome(root) {
   javaItem.onclick = () => toggleManual("java");
   list.appendChild(javaItem);
 
-  const exDone = !!(c.exercise?.anaerobic?.done || c.exercise?.aerobic?.done);
-  const exItem = el("div", `todo-item${exDone ? " done" : ""}`);
-  exItem.innerHTML = `<div class="box">${exDone ? "✓" : ""}</div><div class="txt"><div class="t1">운동</div><div class="t2">무산소 / 유산소 - 사진·메모는 운동 페이지에서</div></div><div class="go">›</div>`;
+  const exScore = exerciseScore(c);
+  const exStateClass = exScore === 1 ? " done" : exScore === 0.5 ? " half" : "";
+  const exBox = exScore === 1 ? "✓" : exScore === 0.5 ? "½" : "";
+  const exSub = exScore === 1
+    ? "무산소·유산소 모두 완료"
+    : exScore === 0.5
+      ? `${c.exercise?.anaerobic?.done ? "무산소만" : "유산소만"} 완료 - 나머지 하나 더 인증하면 완료`
+      : "무산소 / 유산소 - 사진·메모는 운동 페이지에서";
+  const exItem = el("div", `todo-item${exStateClass}`);
+  exItem.innerHTML = `<div class="box">${exBox}</div><div class="txt"><div class="t1">운동</div><div class="t2">${exSub}</div></div><div class="go">›</div>`;
   exItem.onclick = () => navigate("#/exercise");
   list.appendChild(exItem);
 
-  const dietDone = !!(c.diet?.brunch?.done || c.diet?.dinner?.done);
-  const dietItem = el("div", `todo-item${dietDone ? " done" : ""}`);
-  dietItem.innerHTML = `<div class="box">${dietDone ? "✓" : ""}</div><div class="txt"><div class="t1">식단</div><div class="t2">아점 / 저녁 - 사진·메모는 식단 페이지에서</div></div><div class="go">›</div>`;
+  const dScore = dietScore(c);
+  const dietStateClass = dScore === 1 ? " done" : dScore === 0.5 ? " half" : "";
+  const dietBox = dScore === 1 ? "✓" : dScore === 0.5 ? "½" : "";
+  const dietSub = dScore === 1
+    ? "아점·저녁 모두 완료"
+    : dScore === 0.5
+      ? `${c.diet?.brunch?.done ? "아점만" : "저녁만"} 완료 - 나머지 하나 더 인증하면 완료`
+      : "아점 / 저녁 - 사진·메모는 식단 페이지에서";
+  const dietItem = el("div", `todo-item${dietStateClass}`);
+  dietItem.innerHTML = `<div class="box">${dietBox}</div><div class="txt"><div class="t1">식단</div><div class="t2">${dietSub}</div></div><div class="go">›</div>`;
   dietItem.onclick = () => navigate("#/diet");
   list.appendChild(dietItem);
 
