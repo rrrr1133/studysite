@@ -167,8 +167,13 @@ export function renderHome(root) {
   // 진행 현황 stat grid
   root.appendChild(el("div", "section-title", "📊 진행 현황"));
   const statGrid = el("div", "stat-grid");
+  const latestWeight = hist.length > 0 ? hist[hist.length - 1].weight : null;
+  const lost = latestWeight !== null ? Math.round((s.startWeight - latestWeight) * 10) / 10 : null;
+  const lostLabel = lost === null ? "-" : `${lost > 0 ? "-" : lost < 0 ? "+" : ""}${Math.abs(lost)}`;
+
   const stats = [
     { n: `${weekTarget}`, unit: "kg", l: "이번주 목표체중" },
+    { n: lostLabel, unit: lost === null ? "" : "kg", l: "감량한 체중" },
     { n: `${agg.japanese}`, unit: "일", l: "일본어 누적일수" },
     { n: `${agg.java}`, unit: "일", l: "자바·부트캠프 누적일수" },
     { n: `${agg.exercise}`, unit: "일", l: "운동 누적일수" }
