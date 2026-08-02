@@ -10,6 +10,9 @@ package-lock.json
 wntnfghlwjs.jpg
 bnt.jpg
 
+# "엑셀로 내보내기" 버튼으로 받은 개인 기록 파일 (다운로드 폴더가 이 프로젝트로 설정된 듯)
+일본IT취업_트래커_*.xlsx
+
 # macOS
 .DS_Store
 Icon*

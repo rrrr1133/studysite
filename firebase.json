@@ -14,7 +14,8 @@
       "일본어 카루가루1_OCR 복사본.pdf",
       "카루가루 일본어_OCR 복사본.pdf",
       "wntnfghlwjs.jpg",
-      "bnt.jpg"
+      "bnt.jpg",
+      "일본IT취업_트래커_*.xlsx"
     ],
     "rewrites": [
       { "source": "**", "destination": "/index.html" }
