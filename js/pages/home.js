@@ -3,7 +3,7 @@ import { el, navigate } from "../dom.js";
 import {
   elapsedWeek, currentPhase, thisWeekTargetWeight, dDay, formatDday,
   aggregateCheckins, weightHistory, dailyComplianceHistory, todayISO,
-  exerciseScore, dietScore
+  exerciseScore, dietScore, isRestDay
 } from "../tracker-math.js";
 import { saveCheckin, saveSettings } from "../firestore.js";
 import { isExportDue, markExported } from "../auto-export.js";
@@ -259,7 +259,18 @@ export function renderHome(root) {
   }
   root.appendChild(complianceCard);
 
-  // 오늘 할 일
+  // 오늘 할 일 (토요일은 쉬는 날 - 체크리스트 대신 안내만 표시)
+  if (isRestDay(today)) {
+    const restCard = el("div", "card");
+    restCard.innerHTML = `
+      <div class="section-title" style="margin-top:0;">🎉 오늘은 쉬는 날이에요</div>
+      <div class="num-note">토요일은 쉬는 날이라 일본어·자바·운동·식단을 체크 안 하셔도 괜찮아요. 편하게 쉬세요!</div>
+    `;
+    root.appendChild(restCard);
+    renderShortcuts(root);
+    return;
+  }
+
   root.appendChild(el("div", "section-title", "✅ 오늘 할 일"));
   const list = el("div", "todo-list");
 
@@ -303,7 +314,10 @@ export function renderHome(root) {
 
   root.appendChild(list);
 
-  // 바로가기
+  renderShortcuts(root);
+}
+
+function renderShortcuts(root) {
   root.appendChild(el("div", "section-title", "🔗 바로가기"));
   const linkGrid = el("div", "link-grid");
   const links = [

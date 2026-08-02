@@ -30,6 +30,11 @@ export function todayISO() {
   return `${y}-${m}-${day}`;
 }
 
+// 매주 토요일은 쉬는 날 - 체크하지 않아도 되고 성실도 계산에서도 제외된다.
+export function isRestDay(dateISO) {
+  return toDate(dateISO).getDay() === 6;
+}
+
 // xlsx: IF(TODAY()<시작일,0,INT((TODAY()-시작일)/7)+1)
 export function elapsedWeek(settings, today = todayISO()) {
   const diff = daysBetween(settings.trackerStart, today);
@@ -98,8 +103,10 @@ export function weightHistory(checkins) {
 }
 
 // 일본어/자바/운동/식단 4개 항목을 각각 25%로 합산한 일별 종합 달성률(0~100%) 추이
+// 토요일(쉬는 날)은 체크가 필요 없으므로 그래프 계산에서 아예 제외한다.
 export function dailyComplianceHistory(checkins) {
   return Object.entries(checkins || {})
+    .filter(([date]) => !isRestDay(date))
     .map(([date, c]) => {
       let score = 0;
       if (c.japanese?.done) score += 25;
