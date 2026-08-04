@@ -15,10 +15,19 @@ export function renderDayGrid(root, { days, isDayDone, todayIndex, onSelectDay }
   root.appendChild(grid);
 }
 
-export function renderDeck(root, { day, dayIndex, onComplete, backRoute, isFavorite, onToggleFavorite }) {
+// 즐겨찾기 토글 등으로 인한 재렌더(같은 day를 다시 그리는 경우) 사이에 보던 위치를 기억해둔다.
+// 다른 day로 이동한 경우에만 처음(0번째, 앞면)부터 시작한다.
+let lastDayKey = null;
+let lastIndex = 0;
+let lastFlipped = false;
+
+export function renderDeck(root, { day, dayIndex, deckId, onComplete, backRoute, isFavorite, onToggleFavorite }) {
   const cards = day.cards;
-  let i = 0;
-  let flipped = false;
+  const dayKey = `${deckId}-${dayIndex}-${cards.length}`;
+  const resuming = lastDayKey === dayKey;
+  let i = resuming ? Math.min(lastIndex, cards.length - 1) : 0;
+  let flipped = resuming ? lastFlipped : false;
+  lastDayKey = dayKey;
 
   const topbar = el("div", "topbar");
   const back = el("button", "iconbtn", "‹");
@@ -61,6 +70,8 @@ export function renderDeck(root, { day, dayIndex, onComplete, backRoute, isFavor
   };
 
   function renderCard() {
+    lastIndex = i;
+    lastFlipped = flipped;
     wrap.innerHTML = "";
     const w = cards[i];
     renderStar();
@@ -79,7 +90,7 @@ export function renderDeck(root, { day, dayIndex, onComplete, backRoute, isFavor
       <div class="tap-hint">👆 탭해서 다시 보기</div>
     `);
     card.append(front, back2);
-    card.onclick = () => { flipped = !flipped; card.classList.toggle("flipped"); };
+    card.onclick = () => { flipped = !flipped; lastFlipped = flipped; card.classList.toggle("flipped"); };
     wrap.appendChild(card);
     renderDots();
     prevBtn.disabled = i === 0;

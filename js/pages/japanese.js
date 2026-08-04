@@ -54,13 +54,16 @@ function renderTabs(root, active) {
 }
 
 function toggleFavorite(progressKey, id) {
+  // 별 아이콘 자체는 deck.js의 renderStar()가 로컬로 즉시 갱신하므로 여기서 전체 rerender()를
+  // 부르지 않는다 - 부르면 현재 보고 있는 덱이 통째로 다시 그려져 첫 카드로 돌아가 버린다.
+  // (Firestore 쓰기 후 onSnapshot echo로 언젠가 한 번 더 rerender가 오긴 하지만,
+  // renderDeck이 같은 day를 기억해 위치를 복원하므로 안전하다.)
   const uid = state.user.uid;
   const progress = state.progress[progressKey] || {};
   const favorites = { ...(progress.favorites || {}) };
   const next = !favorites[id];
   favorites[id] = next;
   state.progress[progressKey] = { ...progress, favorites };
-  rerender();
   saveProgress(uid, progressKey, { favorites: { [id]: next } });
 }
 
@@ -86,7 +89,7 @@ function renderDeckTab(root, kind, sub, dayParam, buildDays, progressKey) {
     const day = days[dayIndex];
     if (!day) { root.appendChild(el("div", "empty", "존재하지 않는 Day 입니다.")); return; }
     renderDeck(root, {
-      day, dayIndex,
+      day, dayIndex, deckId: progressKey,
       backRoute: `#/japanese/${kind}`,
       isFavorite, onToggleFavorite,
       onComplete: () => {
