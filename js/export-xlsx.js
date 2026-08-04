@@ -33,6 +33,8 @@ function buildRows(settings, checkins) {
   for (let w = 0; w < totalWeeks; w++) {
     const weekEnd = isoAddDays(weekStart, 6);
     const dayFlags = { japanese: [], java: [], exercise: [], diet: [] };
+    const exScores = [];
+    const dietScores = [];
     let weightForWeek = "";
     const memos = [];
     for (let d = 0; d < 7; d++) {
@@ -40,8 +42,12 @@ function buildRows(settings, checkins) {
       const c = checkins[date] || {};
       dayFlags.japanese.push(c.japanese?.done ? "O" : "");
       dayFlags.java.push(c.java?.done ? "O" : "");
-      dayFlags.exercise.push(exerciseScore(c) === 1 ? "O" : "");
-      dayFlags.diet.push(dietScore(c) === 1 ? "O" : "");
+      const exScore = exerciseScore(c);
+      const dtScore = dietScore(c);
+      dayFlags.exercise.push(exScore === 1 ? "O" : exScore === 0.5 ? "△" : "");
+      dayFlags.diet.push(dtScore === 1 ? "O" : dtScore === 0.5 ? "△" : "");
+      exScores.push(exScore);
+      dietScores.push(dtScore);
       if (typeof c.weight === "number") weightForWeek = c.weight;
       if (c.exercise?.anaerobic?.memo) memos.push(c.exercise.anaerobic.memo);
       if (c.exercise?.aerobic?.memo) memos.push(c.exercise.aerobic.memo);
@@ -50,8 +56,8 @@ function buildRows(settings, checkins) {
     }
     const jCount = dayFlags.japanese.filter((v) => v === "O").length;
     const javaCount = dayFlags.java.filter((v) => v === "O").length;
-    const exCount = dayFlags.exercise.filter((v) => v === "O").length;
-    const dietCount = dayFlags.diet.filter((v) => v === "O").length;
+    const exCount = exScores.reduce((sum, v) => sum + v, 0);
+    const dietCount = dietScores.reduce((sum, v) => sum + v, 0);
     const compliancePct = Math.round(((jCount + javaCount + exCount + dietCount) / 28) * 100);
 
     rows.push([
