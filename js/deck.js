@@ -15,7 +15,7 @@ export function renderDayGrid(root, { days, isDayDone, todayIndex, onSelectDay }
   root.appendChild(grid);
 }
 
-export function renderDeck(root, { day, dayIndex, onComplete, backRoute }) {
+export function renderDeck(root, { day, dayIndex, onComplete, backRoute, isFavorite, onToggleFavorite }) {
   const cards = day.cards;
   let i = 0;
   let flipped = false;
@@ -26,6 +26,8 @@ export function renderDeck(root, { day, dayIndex, onComplete, backRoute }) {
   const title = el("div", "title");
   title.innerHTML = `<div class="t1">Day ${dayIndex + 1}</div><div class="t2">${day.label || ""} · ${cards.length}개 단어</div>`;
   topbar.append(back, title);
+  const starBtn = el("button", "iconbtn star-btn", "☆");
+  topbar.appendChild(starBtn);
   root.appendChild(topbar);
 
   const dots = el("div", "dots");
@@ -45,9 +47,23 @@ export function renderDeck(root, { day, dayIndex, onComplete, backRoute }) {
     });
   }
 
+  function renderStar() {
+    if (!isFavorite) return;
+    const w = cards[i];
+    const active = isFavorite(w.id);
+    starBtn.textContent = active ? "★" : "☆";
+    starBtn.classList.toggle("active", active);
+  }
+  starBtn.onclick = () => {
+    const w = cards[i];
+    onToggleFavorite(w.id);
+    renderStar();
+  };
+
   function renderCard() {
     wrap.innerHTML = "";
     const w = cards[i];
+    renderStar();
     const card = el("div", `flashcard${flipped ? " flipped" : ""}`);
     const pill = w.pos ? `<span class="pos-pill ${POS_CLASS[w.pos] || "pos-noun"}">${w.pos}</span>` : (w.bonus ? `<span class="pos-pill pos-adv">추가 단어</span>` : "");
     const front = el("div", "face face-front", `

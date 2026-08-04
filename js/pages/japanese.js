@@ -5,11 +5,11 @@ import { saveProgress } from "../firestore.js";
 
 function buildKarugaruDays() {
   const src = state.data.karugaru;
-  return src.days.map((d) => ({
+  return src.days.map((d, dayIndex) => ({
     label: `${d.lesson} · ${d.title}`,
     cards: [
-      ...d.words.map((w) => ({ jp: w.jp, reading: w.reading, kr: w.kr, verify: !!w.verify })),
-      ...(d.bonus || []).map((w) => ({ jp: w.jp, reading: w.reading, kr: w.kr, bonus: true }))
+      ...d.words.map((w, idx) => ({ id: `karu-${dayIndex}-${idx}`, jp: w.jp, reading: w.reading, kr: w.kr, verify: !!w.verify })),
+      ...(d.bonus || []).map((w, idx) => ({ id: `karu-${dayIndex}-b${idx}`, jp: w.jp, reading: w.reading, kr: w.kr, bonus: true }))
     ]
   }));
 }
@@ -26,7 +26,7 @@ function buildJp1000Days() {
     days.push({
       label: `${first}~${last}번`,
       cards: chunk.flatMap((p) => p.words.map((w) => ({
-        jp: w.jp, reading: w.reading, kr: w.kr, ex_jp: w.ex_jp, ex_kr: w.ex_kr, pos: w.pos
+        id: `jp1000-${w.no}`, jp: w.jp, reading: w.reading, kr: w.kr, ex_jp: w.ex_jp, ex_kr: w.ex_kr, pos: w.pos
       })))
     });
   }
@@ -53,10 +53,33 @@ function renderTabs(root, active) {
   root.appendChild(tabs);
 }
 
-function renderDeckTab(root, kind, dayParam, buildDays, progressKey) {
+function toggleFavorite(progressKey, id) {
+  const uid = state.user.uid;
+  const progress = state.progress[progressKey] || {};
+  const favorites = { ...(progress.favorites || {}) };
+  const next = !favorites[id];
+  favorites[id] = next;
+  state.progress[progressKey] = { ...progress, favorites };
+  rerender();
+  saveProgress(uid, progressKey, { favorites: { [id]: next } });
+}
+
+function renderDeckTab(root, kind, sub, dayParam, buildDays, progressKey) {
   const days = buildDays();
   const progress = state.progress[progressKey] || {};
   const completed = progress.completedDays || [];
+  const favorites = progress.favorites || {};
+  const isFavorite = (id) => !!favorites[id];
+  const onToggleFavorite = (id) => toggleFavorite(progressKey, id);
+
+  if (sub === "favorites") {
+    renderFavoritesList(root, {
+      cards: days.flatMap((d) => d.cards).filter((c) => isFavorite(c.id)),
+      isFavorite, onToggleFavorite,
+      backRoute: `#/japanese/${kind}`
+    });
+    return;
+  }
 
   if (dayParam !== undefined) {
     const dayIndex = Number(dayParam);
@@ -65,6 +88,7 @@ function renderDeckTab(root, kind, dayParam, buildDays, progressKey) {
     renderDeck(root, {
       day, dayIndex,
       backRoute: `#/japanese/${kind}`,
+      isFavorite, onToggleFavorite,
       onComplete: () => {
         const uid = state.user.uid;
         const next = Array.from(new Set([...completed, dayIndex]));
@@ -88,12 +112,54 @@ function renderDeckTab(root, kind, dayParam, buildDays, progressKey) {
   `;
   root.appendChild(header);
 
+  const favCount = Object.values(favorites).filter(Boolean).length;
+  const favBtn = el("button", "cta-btn secondary", `⭐ 즐겨찾기 (${favCount}개)`);
+  favBtn.style.marginBottom = "14px";
+  favBtn.onclick = () => navigate(`#/japanese/${kind}/favorites`);
+  root.appendChild(favBtn);
+
   const todayIdx = todayDayIndex(days, completed);
   renderDayGrid(root, {
     days, todayIndex: todayIdx,
     isDayDone: (idx) => completed.includes(idx),
     onSelectDay: (idx) => navigate(`#/japanese/${kind}/day/${idx}`)
   });
+}
+
+function renderFavoritesList(root, { cards, isFavorite, onToggleFavorite, backRoute }) {
+  const topbar = el("div", "topbar");
+  const back = el("button", "iconbtn", "‹");
+  back.onclick = () => navigate(backRoute);
+  const title = el("div", "title", `<div class="t1">⭐ 즐겨찾기</div><div class="t2">저장된 단어 ${cards.length}개</div>`);
+  topbar.append(back, title);
+  root.appendChild(topbar);
+
+  if (cards.length === 0) {
+    root.appendChild(el("div", "empty", "단어 카드에서 별 아이콘을 눌러 즐겨찾기에 추가해 보세요"));
+    return;
+  }
+
+  const list = el("div", "fav-list");
+  cards.forEach((w) => {
+    const row = el("div", "fav-row");
+    row.innerHTML = `
+      <div class="info">
+        <div class="jp">${w.jp}<span class="reading">${w.reading || ""}</span></div>
+        <div class="kr">${w.kr}</div>
+      </div>
+    `;
+    const starBtn = el("button", "iconbtn star-btn active", "★");
+    starBtn.onclick = () => {
+      onToggleFavorite(w.id);
+      row.remove();
+      if (!list.children.length) {
+        list.replaceWith(el("div", "empty", "단어 카드에서 별 아이콘을 눌러 즐겨찾기에 추가해 보세요"));
+      }
+    };
+    row.appendChild(starBtn);
+    list.appendChild(row);
+  });
+  root.appendChild(list);
 }
 
 function renderNumbersTab(root) {
@@ -122,7 +188,7 @@ export function renderJapanese(root, params) {
 
   renderTabs(root, kind);
 
-  if (kind === "karugaru") renderDeckTab(root, "karugaru", sub === "day" ? dayParam : undefined, buildKarugaruDays, "karugaru");
-  else if (kind === "jp1000") renderDeckTab(root, "jp1000", sub === "day" ? dayParam : undefined, buildJp1000Days, "jp1000");
+  if (kind === "karugaru") renderDeckTab(root, "karugaru", sub, sub === "day" ? dayParam : undefined, buildKarugaruDays, "karugaru");
+  else if (kind === "jp1000") renderDeckTab(root, "jp1000", sub, sub === "day" ? dayParam : undefined, buildJp1000Days, "jp1000");
   else if (kind === "numbers") renderNumbersTab(root);
 }
